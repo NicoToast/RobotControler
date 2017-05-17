@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/remoterHandHorizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:orientation="horizontal"
+    android:scrollbars="none"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="mixturedd.robotcontroler.remoter.RemoterHandFragment"
+    tools:listitem="@layout/item_remoter_hand_view" />

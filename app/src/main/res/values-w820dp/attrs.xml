@@ -1,0 +1,37 @@
+<resources>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="PinchToZoomImageView">
+        <!-- Minimum width to which a bitmap image can scale -->
+        <attr name="minBitmapWidth" format="dimension"/>
+        <!-- Minimum height to which a bitmap image can scale -->
+        <attr name="minBitmapHeight" format="dimension"/>
+        <!-- Maximum width to which a bitmap image can scale -->
+        <attr name="maxBitmapWidth" format="dimension"/>
+        <!-- Maximum height to which a bitmap image can scale -->
+        <attr name="maxBitmapHeight" format="dimension"/>
+        <!-- Amount of distance a gesture must travel before it is considered a pan and not a
+        touch -->
+        <attr name="panThreshold" format="integer"/>
+        <!-- Center the image on an axis where the size of the image is less than the size of the
+        view. -->
+        <attr name="pinAxesSmallerThanBounds" format="boolean"/>
+        <!-- Extra translation to the left -->
+        <attr name="transExtraLeft" format="dimension"/>
+        <!-- Extra translation to the top -->
+        <attr name="transExtraTop" format="dimension"/>
+        <!-- Extra translation to the right -->
+        <attr name="transExtraRight" format="dimension"/>
+        <!-- Extra translation to the bottom -->
+        <attr name="transExtraBottom" format="dimension"/>
+    </declare-styleable>
+
+</resources>

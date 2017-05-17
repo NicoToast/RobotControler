@@ -1,0 +1,15 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_wifi_visibility_strike_24dp">
+    <target
+        android:name="strike"
+        android:animation="@animator/wifi_strike" />
+
+    <target
+        android:name="strike_negative"
+        android:animation="@animator/wifi_strike_negative" />
+
+    <target
+        android:name="shape"
+        android:animation="@animator/wifi_vector" />
+
+</animated-vector>

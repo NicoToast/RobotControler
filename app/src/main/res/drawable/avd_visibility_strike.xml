@@ -1,0 +1,47 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/ic_wifi_visibility_strike_24dp">
+    <target android:name="strike">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="strike"
+                android:propertyName="pathData"
+                android:startOffset="268"
+                android:duration="1271"
+                android:valueFrom="M 2,4.27 3.27,3 3.27,3 2,4.27 Z"
+                android:valueTo="M 19.73,22 21,20.73 3.27,3 2,4.27 Z"
+                android:valueType="pathType"
+                android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+        </aapt:attr>
+    </target>
+    <target android:name="strike_negative">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="strike_negative"
+                android:propertyName="pathData"
+                android:startOffset="268"
+                android:duration="1271"
+                android:valueFrom="M0 0 L24,0 L24,24 L0,24 L0,0 Z M4.54,1.73 L3.27,3 L3.27,3 L4.54,1.73 Z"
+                android:valueTo="M0 0 L24,0 L24,24 L0,24 L0,0 Z M4.54,1.73 L3.27,3 L21,20.73 L22.27,19.46 Z"
+                android:valueType="pathType"
+                android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+        </aapt:attr>
+    </target>
+    <target android:name="vector">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="vector"
+                android:propertyName="alpha"
+                android:startOffset="268"
+                android:duration="1271"
+                android:valueFrom="1"
+                android:valueTo="0.333"
+                android:valueType="floatType"
+                android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:propertyName="pathData"
+    android:startOffset="268"
+    android:duration="1271"
+    android:valueFrom="M 2,4.27 3.27,3 3.27,3 2,4.27 Z"
+    android:valueTo="M 19.73,22 21,20.73 3.27,3 2,4.27 Z"
+    android:valueType="pathType"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>

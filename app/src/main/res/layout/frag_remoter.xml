@@ -1,0 +1,109 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mixturedd.robotcontroler.remoter.RemoterFragment">
+
+    <mixturedd.robotcontroler.remoter.MjpegSurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/toolbar_remoter_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <mixturedd.robotcontroler.remoter.GestureRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="#00000000">
+
+        <ImageButton
+            android:id="@+id/buttonCtrLeft"
+            android:layout_width="@dimen/control_button_margin"
+            android:layout_height="@dimen/control_button_margin"
+            android:layout_above="@+id/buttonCtrDown"
+            android:layout_marginStart="16dp"
+            android:adjustViewBounds="false"
+            android:background="#00000000"
+            android:contentDescription="@string/control_left"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/control_left" />
+
+        <ImageButton
+            android:id="@+id/buttonCtrUp"
+            android:layout_width="@dimen/control_button_margin"
+            android:layout_height="@dimen/control_button_margin"
+            android:layout_above="@+id/buttonCtrLeft"
+            android:layout_toEndOf="@+id/buttonCtrLeft"
+            android:background="#00000000"
+            android:contentDescription="@string/control_up"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/control_up" />
+
+        <ImageButton
+            android:id="@+id/buttonCtrRight"
+            android:layout_width="@dimen/control_button_margin"
+            android:layout_height="@dimen/control_button_margin"
+            android:layout_below="@+id/buttonCtrUp"
+            android:layout_toEndOf="@+id/buttonCtrUp"
+            android:background="#00000000"
+            android:contentDescription="@string/control_right"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/control_right" />
+
+        <ImageButton
+            android:id="@+id/buttonCtrDown"
+            android:layout_width="@dimen/control_button_margin"
+            android:layout_height="@dimen/control_button_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:layout_toEndOf="@+id/buttonCtrLeft"
+            android:background="#00000000"
+            android:contentDescription="@string/control_down"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/control_down" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/infoFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginTop="56dp"
+            android:clickable="true"
+            android:contentDescription="@string/remoter_info_fab"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_info_outline" />
+
+        <FrameLayout
+            android:id="@+id/info_content"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_alignEnd="@+id/infoFab"
+            android:layout_marginTop="16dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/handFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_pan_tool" />
+
+        <FrameLayout
+            android:id="@+id/hand_remoter_content"
+            android:layout_width="420dp"
+            android:layout_height="150dp"
+            android:layout_alignBottom="@+id/handFab"
+            android:layout_toStartOf="@+id/infoFab" />
+
+    </mixturedd.robotcontroler.remoter.GestureRelativeLayout>
+
+</FrameLayout>
