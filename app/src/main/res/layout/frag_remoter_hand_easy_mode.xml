@@ -31,35 +31,36 @@
         android:id="@+id/bt_arm_right"
         android:layout_width="@dimen/control_button_margin"
         android:layout_height="@dimen/control_button_margin"
+        android:layout_below="@+id/bt_arm_up"
+        android:layout_toEndOf="@+id/bt_arm_up"
         android:background="#00000000"
         android:contentDescription="@string/control_right"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/control_right"
-        android:layout_below="@+id/bt_arm_up"
-        android:layout_toEndOf="@+id/bt_arm_up" />
+        app:srcCompat="@drawable/control_right" />
 
     <ImageButton
         android:id="@+id/bt_arm_down"
         android:layout_width="@dimen/control_button_margin"
         android:layout_height="@dimen/control_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="46dp"
         android:background="#00000000"
         android:contentDescription="@string/control_down"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/control_down"
-        android:layout_marginEnd="46dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        app:srcCompat="@drawable/control_down" />
 
     <ImageButton
         android:id="@+id/bt_arm_tighten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bt_arm_up"
+        android:layout_marginEnd="12dp"
+        android:layout_toStartOf="@+id/bt_arm_left"
         android:backgroundTint="@android:color/transparent"
         android:contentDescription="@string/control_tighten"
-        app:srcCompat="@drawable/ic_add_24dp"
-        android:layout_marginEnd="12dp"
-        android:layout_alignTop="@+id/bt_arm_up"
-        android:layout_toStartOf="@+id/bt_arm_left" />
+        android:tint="@color/tint_bt"
+        app:srcCompat="@drawable/ic_add_24dp" />
 
     <ImageButton
         android:id="@+id/bt_arm_loosen"
@@ -69,5 +70,6 @@
         android:layout_below="@+id/bt_arm_tighten"
         android:backgroundTint="@android:color/transparent"
         android:contentDescription="@string/control_loosen"
+        android:tint="@color/tint_bt"
         app:srcCompat="@drawable/ic_remove_24dp" />
 </RelativeLayout>

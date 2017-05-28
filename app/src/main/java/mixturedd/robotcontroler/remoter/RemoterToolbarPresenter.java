@@ -31,13 +31,13 @@ public class RemoterToolbarPresenter implements RemoterContract.ToolbarPresenter
     @Override
     public void setStatePlay() {
         mParentPresenter.startMjpeg();
-        mToolbarView.onPlayBt();
+        mToolbarView.onVideoPlay();
     }
 
     @Override
     public void setStatePause() {
         mParentPresenter.stopMjpeg();
-        mToolbarView.onPauseBt();
+        mToolbarView.onVideoPause();
     }
 
     @Override

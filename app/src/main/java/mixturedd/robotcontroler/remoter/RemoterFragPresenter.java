@@ -14,10 +14,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import mixturedd.robotcontroler.BaseActivity;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static mixturedd.robotcontroler.remoter.ControlCode.SEVER_URL;
 import static mixturedd.robotcontroler.remoter.ControlCode.VIDEO_MODEL_STREAM;
 import static mixturedd.robotcontroler.remoter.ControlCode.VIDEO_PORT;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_INVISIBLE;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_VISIBLE;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_VISIBLE_AUTO;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.floatViewVisible;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.handVisible;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.infoVisible;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.toolbarVisible;
 
 /**
  * RemoterFragPresenter.java
@@ -37,9 +46,11 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
     private static final String COMM_MOVE_STOP = "FF000000FF";
     private MjpegSurfaceView mMjpegSurfaceView;
     private RemoterContract.InfoPresenter mInfoPresenter;
+    private RemoterContract.ToolbarPresenter mToolbarPresenter;
     private ClientThread mClient;
-
+    private BaseActivity mActivity;
     private RemoterContract.FragView mFragView;
+    private DrawTask mDrawTask;
 
     @Override
     public void init(RemoterContract.FragView fragView, View view) {
@@ -47,33 +58,39 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
         this.mFragView.initView(view);
     }
 
-    public void initFragmentsPresenter(RemoterInfoFragment infoFragment, RemoterHandFragment handFragment, RemoterToolbarFragment toolbarFragment){
+    void initFragmentsPresenter(RemoterInfoFragment infoFragment, RemoterHandFragment handFragment, RemoterToolbarFragment toolbarFragment) {
         mInfoPresenter = (RemoterInfoPresenter) infoFragment.getPresenters()[0];
-
+        mToolbarPresenter = (RemoterToolbarPresenter) toolbarFragment.getPresenters()[0];
     }
 
     @Override
     public void orderSendBySocket(String order) {
-        Message msg = new Message();
-        msg.what = 0x345;
-        msg.obj = order;
-        mClient.getRevHandler().sendMessage(msg);
+        if(mClient.isClientThreadRun()){
+            Message msg = new Message();
+            msg.what = 0x345;
+            msg.obj = order;
+            mClient.getSendHandler().sendMessage(msg);
+        }
     }
 
-    public void starSocketClient() {
-        Handler handler = new MsgReceiveHandler(mInfoPresenter);
-        mClient = new ClientThread(handler);
+    private void starSocketClient() {
+        mClient = ClientThread.getInstance().setSendMessageHandler(new MsgReceiveHandler(mInfoPresenter));
         new Thread(mClient).start();
     }
 
-    public void stopSocketClient() {
+    private void stopSocketClient() {
         if (mClient != null) {
             mClient.stopSocket();
         }
     }
 
-    public void setSurfaceView(MjpegSurfaceView view) {
+    void setSurfaceView(MjpegSurfaceView view) {
         mMjpegSurfaceView = view;
+    }
+
+    @Override
+    public BaseActivity getActivity() {
+        return mActivity;
     }
 
     /**
@@ -85,8 +102,10 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
             Log.i(TAG, "视频为空");
             return;
         }
-//        toolbarView.videoPlayOnPress(mMjpegSurfaceView);
-        new DrawTask().execute(URL);
+        if (mDrawTask == null){
+            mDrawTask = new DrawTask();
+            mDrawTask.execute(URL);
+        }
     }
 
     /**
@@ -98,34 +117,91 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
             Log.i(TAG, "视频为空");
             return;
         }
-//        toolbarView.videoPauseOnPress(mMjpegSurfaceView);
         mMjpegSurfaceView.stopPlayback();
-    }
-
-    @Override
-    public void toggleToolbar(boolean visible) {
-        if (visible) {
-            mFragView.hideToolbar();
-        } else {
-            mFragView.showToolbar();
+        if (mDrawTask != null && !mDrawTask.isCancelled()){
+            mDrawTask.cancel(true);
         }
     }
 
     @Override
-    public void toggleInfo(boolean visible) {
-        if (visible) {
-            mFragView.hideInfo();
-        } else {
-            mFragView.showInfo();
+    public void refreshInputStream() {
+        mDrawTask = new DrawTask();
+        mDrawTask.execute(URL);
+    }
+
+    @Override
+    public void toggleFloatView(int visible) {
+        switch (visible){
+            case VIEW_VISIBLE_AUTO:
+                if (floatViewVisible) {
+                    mFragView.hideFloatView();
+                } else {
+                    mFragView.showFloatView();
+                }
+                break;
+            case VIEW_VISIBLE:
+                mFragView.showFloatView();
+                break;
+            case VIEW_INVISIBLE:
+                mFragView.hideFloatView();
+                break;
         }
     }
 
     @Override
-    public void toggleHand(boolean visible) {
-        if (visible) {
-            mFragView.hideHand();
-        } else {
-            mFragView.showHand();
+    public void toggleToolbar(int visible) {
+        switch (visible){
+            case VIEW_VISIBLE_AUTO:
+                if (toolbarVisible) {
+                    mFragView.hideToolbar();
+                } else {
+                    mFragView.showToolbar();
+                }
+                break;
+            case VIEW_VISIBLE:
+                mFragView.showToolbar();
+                break;
+            case VIEW_INVISIBLE:
+                mFragView.hideToolbar();
+                break;
+        }
+    }
+
+    @Override
+    public void toggleInfo(int visible) {
+        switch (visible){
+            case VIEW_VISIBLE_AUTO:
+                if (infoVisible) {
+                    mFragView.hideInfo();
+                } else {
+                    mFragView.showInfo();
+                }
+                break;
+            case VIEW_VISIBLE:
+                mFragView.showInfo();
+                break;
+            case VIEW_INVISIBLE:
+                mFragView.hideInfo();
+                break;
+        }
+    }
+
+    @Override
+    public void toggleHand(int visible) {
+        switch (visible){
+            case VIEW_VISIBLE_AUTO:
+                if (handVisible) {
+                    mFragView.hideHand();
+                } else {
+                    mFragView.showHand();
+                }
+                break;
+            case VIEW_VISIBLE:
+                mFragView.showHand();
+                break;
+            case VIEW_INVISIBLE:
+                mFragView.hideHand();
+                break;
         }
     }
 
@@ -188,7 +264,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     @Override
     public void onAttach(Context context) {
-
+        mActivity = (BaseActivity) context;
     }
 
     @Override
@@ -198,12 +274,12 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     @Override
     public void onResume() {
-
+        mToolbarPresenter.setStatePlay();
     }
 
     @Override
     public void onPause() {
-
+        mToolbarPresenter.setStatePause();
     }
 
     @Override
@@ -222,7 +298,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
         @Override
         protected MjpegInputStream doInBackground(String... url) {
             HttpURLConnection conn;
-            InputStream inputstream = null;
+            InputStream inputstream;
             Log.d(TAG, "1. Sending http request");
             try {
                 URL videoUrl = new URL(url[0]);
@@ -257,10 +333,10 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
         }
     }
 
-    private static class MsgReceiveHandler extends Handler{
+    private static class MsgReceiveHandler extends Handler {
         private RemoterContract.InfoPresenter mInfoPresenter;
 
-        public MsgReceiveHandler(RemoterContract.InfoPresenter infoPresenter) {
+        MsgReceiveHandler(RemoterContract.InfoPresenter infoPresenter) {
             this.mInfoPresenter = infoPresenter;
         }
 
@@ -276,7 +352,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
                 StringBuffer stringBuffer = new StringBuffer(string);
                 String infoCategory = stringBuffer.substring(0, colonIndex);
                 String value = stringBuffer.substring(string.indexOf(":") + 1, string.length());
-                switch (infoCategory){
+                switch (infoCategory) {
                     case "Distance":
                         mInfoPresenter.postDistance(value);
                         break;

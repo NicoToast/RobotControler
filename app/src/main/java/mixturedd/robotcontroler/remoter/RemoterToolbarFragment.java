@@ -50,7 +50,7 @@ public class RemoterToolbarFragment extends BaseFragment implements RemoterContr
 
     @Override
     protected BasePresenter.FragBasePresenter[] getPresenters() {
-        return new BasePresenter.FragBasePresenter[0];
+        return new BasePresenter.FragBasePresenter[]{mPresenter};
     }
 
     @Override
@@ -73,14 +73,14 @@ public class RemoterToolbarFragment extends BaseFragment implements RemoterContr
     }
 
     @Override
-    public void onPlayBt() {
+    public void onVideoPlay() {
         videoButton.setImageState(STATE_SET_PAUSE, true);
         videoState.setText(R.string.remoter_toolbar_pause);
         playState = false;
     }
 
     @Override
-    public void onPauseBt() {
+    public void onVideoPause() {
         videoButton.setImageState(STATE_SET_PLAY, true);
         videoState.setText(R.string.remoter_toolbar_play);
         playState = true;

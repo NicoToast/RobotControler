@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#FF000000</color>
     <color name="colorAccent">#03a9f4</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="black_overlay">#9a000000</color>
 
-    <color name="video_bg">#b0b0ad</color>
+    <color name="video_bg">#838382</color>
 
 </resources>

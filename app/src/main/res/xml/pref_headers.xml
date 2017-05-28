@@ -1,20 +1,21 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- These settings headers are only used on tablets. -->
+    <header
+        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$ServerPreferenceFragment"
+        android:icon="@drawable/ic_cloud_queue"
+        android:title="@string/pref_header_server"
+        android:summary="@string/pref_header_description_server"/>
 
     <header
-        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
+        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$VideoPreferenceFragment"
+        android:icon="@drawable/ic_videocam"
+        android:title="@string/pref_header_video"
+        android:summary="@string/pref_header_description_video"/>
 
     <header
-        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
-
-    <header
-        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="mixturedd.robotcontroler.settings.SettingsActivity$RemoterPreferenceFragment"
+        android:icon="@drawable/ic_remoter"
+        android:title="@string/pref_header_remoter"
+        android:summary="@string/pref_header_description_remoter"/>
 
 </preference-headers>

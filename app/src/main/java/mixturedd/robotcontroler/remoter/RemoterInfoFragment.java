@@ -61,22 +61,22 @@ public class RemoterInfoFragment extends BaseFragment implements RemoterContract
 
     @Override
     public void showTemperature(String value) {
-        temperature.setText(value + "(°C)");
+        temperature.setText(String.format(mActivity.getString(R.string.unit_degree), value));
     }
 
     @Override
     public void showGas(String value) {
-        gas.setText(value + "(PPN)");
+        gas.setText(String.format(mActivity.getString(R.string.unit_gas), value));
     }
 
     @Override
     public void showDistance(String value) {
-        distance.setText(value + "(CM)");
+        distance.setText(String.format(mActivity.getString(R.string.unit_distance), value));
     }
 
     @Override
     public void showHumidity(String value) {
-        humidity.setText(value + "(%)");
+        humidity.setText(String.format(mActivity.getString(R.string.unit_humidity), value));
     }
 
 }

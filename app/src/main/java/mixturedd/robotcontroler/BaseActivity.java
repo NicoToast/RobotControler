@@ -51,6 +51,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void parseArgumentsFromIntent(Intent argIntent) {
     }
 
+    /**
+     * 加载设置
+     */
+    protected void parsePreference() {
+    }
+
     private void addPresenters() {
         BasePresenter.ActBasePresenter[] presenters = getPresenters();
         if (presenters != null) {
@@ -65,6 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (getIntent() != null) {
             parseArgumentsFromIntent(getIntent());
         }
+        parsePreference();
         addPresenters();
         onInitPresenters();
         initEvent();

@@ -25,12 +25,12 @@ import static mixturedd.robotcontroler.remoter.ControlCode.ORDER_SAE;
  */
 
 public class RemoterHandPresenter implements RemoterContract.HandPresenter {
-    private static final String COMM_ARM_FORWARD = "FF020100FF";
-    private static final String COMM_ARM_BACKWARDS = "FF020200FF";
-    private static final String COMM_ARM_RIGHT = "FF020400FF";
-    private static final String COMM_ARM_LEFT = "FF020300FF";
-    private static final String COMM_ARM_LOOSEN = "FF020500FF";
-    private static final String COMM_ARM_TIGHTEN = "FF020600FF";
+    private static final String COMM_ARM_FORWARD = "FF020300FF";
+    private static final String COMM_ARM_BACKWARDS = "FF020400FF";
+    private static final String COMM_ARM_RIGHT = "FF020200FF";
+    private static final String COMM_ARM_LEFT = "FF020100FF";
+    private static final String COMM_ARM_LOOSEN = "FF020600FF";
+    private static final String COMM_ARM_TIGHTEN = "FF020500FF";
 
     private RemoterContract.HandView mHandView;
     private RemoterContract.FragPresenter mParentPresenter;

@@ -3,6 +3,7 @@ package mixturedd.robotcontroler.remoter;
 import android.view.MotionEvent;
 import android.view.View;
 
+import mixturedd.robotcontroler.BaseActivity;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.BaseView;
 
@@ -28,6 +29,9 @@ public interface RemoterContract {
         void showInfo();
         void hideHand();
         void showHand();
+
+        void hideFloatView();
+        void showFloatView();
 
         /**
          * 前进按钮
@@ -58,9 +62,11 @@ public interface RemoterContract {
     }
 
     interface FragPresenter extends BasePresenter.FragBasePresenter<FragView> {
-        void toggleToolbar(boolean visible);
-        void toggleInfo(boolean visible);
-        void toggleHand(boolean visible);
+        BaseActivity getActivity();
+        void toggleToolbar(int visible);
+        void toggleInfo(int visible);
+        void toggleHand(int visible);
+        void toggleFloatView(int visible);
         /**
          * 向前
          */
@@ -91,6 +97,8 @@ public interface RemoterContract {
         void stopMjpeg();
 
         void orderSendBySocket(String order);
+
+        void refreshInputStream();
     }
 
     interface InfoView extends BaseView.FragBaseView {
@@ -114,9 +122,9 @@ public interface RemoterContract {
     }
 
     interface ToolbarView extends BaseView.FragBaseView{
-        void onPlayBt();
+        void onVideoPlay();
 
-        void onPauseBt();
+        void onVideoPause();
     }
 
     interface ToolbarPresenter extends BasePresenter.FragBasePresenter<ToolbarView> {

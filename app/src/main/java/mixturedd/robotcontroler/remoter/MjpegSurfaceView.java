@@ -50,7 +50,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     private int displayMode;
 
     public class MjpegViewThread extends Thread {
-        private SurfaceHolder mSurfaceHolder;
+        private final SurfaceHolder mSurfaceHolder;
         private int frameCounter = 0;
         private long start;
         private Bitmap ovl;
@@ -112,7 +112,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             Bitmap bm;
             int width;
             int height;
-            Rect destRect;
+            Rect destRect = null;
             Canvas c = null;
             Paint p = new Paint();
             String fps;
@@ -123,11 +123,15 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         synchronized (mSurfaceHolder) {
                             try {
                                 bm = mIn.readMjpegFrame();
-                                destRect = destRect(bm.getWidth(), bm.getHeight());
-                                c.drawColor(Color.LTGRAY);
-                                c.drawBitmap(bm, null, destRect, p);
+                                if (bm != null){
+                                    destRect = destRect(bm.getWidth(), bm.getHeight());
+                                    c.drawColor(Color.LTGRAY);
+                                    if (destRect != null){
+                                        c.drawBitmap(bm, null, destRect, p);
+                                    }
+                                }
                                 //fps显示
-                                if (showFps) {
+                                if (showFps && destRect != null) {
                                     p.setXfermode(mode);
                                     if (ovl != null) {
                                         height = ((ovlPos & 1) == 1) ? destRect.top : destRect.bottom - ovl.getHeight();

@@ -15,10 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
-    <mixturedd.robotcontroler.remoter.GestureRelativeLayout
+    <mixturedd.robotcontroler.remoter.GestureDetectorLayout
+        android:id="@+id/gestureDetectorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="#00000000">
 
         <ImageButton
@@ -73,18 +75,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginTop="56dp"
             android:clickable="true"
             android:contentDescription="@string/remoter_info_fab"
             app:fabSize="mini"
-            app:srcCompat="@drawable/ic_info_outline" />
+            app:srcCompat="@drawable/ic_sensor_info" />
 
         <FrameLayout
             android:id="@+id/info_content"
             android:layout_width="230dp"
             android:layout_height="230dp"
-            android:layout_alignEnd="@+id/infoFab"
-            android:layout_marginTop="16dp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/infoFab" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/handFab"
@@ -104,6 +105,19 @@
             android:layout_alignBottom="@+id/handFab"
             android:layout_toStartOf="@+id/infoFab" />
 
-    </mixturedd.robotcontroler.remoter.GestureRelativeLayout>
+        <TextView
+            android:id="@+id/tv_armValue"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="false"
+            android:background="@drawable/bg_floatview"
+            android:gravity="center"
+            android:text="0°"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+    </mixturedd.robotcontroler.remoter.GestureDetectorLayout>
 
 </FrameLayout>

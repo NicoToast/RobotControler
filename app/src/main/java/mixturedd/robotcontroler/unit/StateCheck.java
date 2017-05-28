@@ -21,25 +21,16 @@ import static mixturedd.robotcontroler.remoter.ControlCode.SEVER_URL;
 public class StateCheck {
     private static final String TAG = "StateCheck";
 
-    public static boolean isConnectRobot(Context context) {
+    public static boolean isConnectRobot(Context context, String urlStr) {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connManager.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
-            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && testConnect()) {
-                // connected to wifi
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            // not connected to the internet
-            return false;
-        }
+        return activeNetwork != null && testConnect(urlStr);
+        // TODO: 2017/5/24 此处需要改 + activeNetwork.getType() == ConnectivityManager.TYPE_WIFI &&
     }
 
-    private static boolean testConnect() {
+    public static boolean testConnect(String urlStr) {
         try {
-            URL url = new URL(SEVER_URL);
+            URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
             int responseCode = conn.getResponseCode();

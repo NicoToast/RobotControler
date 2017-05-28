@@ -59,6 +59,12 @@ public abstract class BaseFragment extends Fragment {
     protected void parseArgumentsFromBundle(Bundle argBundle) {
     }
 
+    /**
+     * 加载设置
+     */
+    protected void parsePreference() {
+    }
+
     private void addPresenters() {
         BasePresenter.FragBasePresenter[] presenters = getPresenters();
         if (presenters != null) {
@@ -73,6 +79,8 @@ public abstract class BaseFragment extends Fragment {
         if (getArguments() != null) {
             parseArgumentsFromBundle(getArguments());
         }
+
+        parsePreference();
 
         if (savedInstanceState != null) {
             boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
@@ -91,7 +99,6 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
-        addPresenters();
         onInitPresenters(view);
         initEvent();
         return view;
@@ -101,6 +108,7 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mActivity = (Activity) context;
+        addPresenters();
         //依次调用BasePresenter的onAttach方法
         for (BasePresenter.FragBasePresenter presenter : mAllPresenters) {
             if (presenter != null) {

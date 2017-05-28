@@ -13,14 +13,6 @@ public class ControlCode {
     public static String SEVER_IP = "192.168.1.1";
     public static String SEVER_URL = "http://" + SEVER_IP;
     public static int SEVER_PORT = 2001;
-    //Http方式
-    public static String SEVER_BEEN = "/cgi-bin/robotdriver?";
-    public static String CATEGORY_MOVE = "C0";
-    public static String C0_FORWARD = "1";
-    public static String C0_BACKWARD = "2";
-    public static String C0_TURNRIGHT = "4";
-    public static String C0_TURNLEFT = "3";
-    public static String C0_STOP = "4";
     //Socket方式
     public static String ORDER_SAE = "FF";
     //  电机
