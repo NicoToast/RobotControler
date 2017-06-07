@@ -1,5 +1,6 @@
 package mixturedd.robotcontroler.remoter;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import mixturedd.robotcontroler.BaseFragment;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.R;
+import mixturedd.robotcontroler.widgets.MsgSwitcher;
 
 /**
  * RemoterToolbarFragment.java
@@ -18,6 +20,9 @@ import mixturedd.robotcontroler.R;
  */
 
 public class RemoterToolbarFragment extends BaseFragment implements RemoterContract.ToolbarView {
+    public static final int MSG_TYPE_ERROR = 0;
+    public static final int MSG_TYPE_SUCCESS = 1;
+    public static final int MSG_TYPE_NORMAL = 3;
     private static final int[] STATE_SET_PLAY =
             {R.attr.state_play, -R.attr.state_pause, -R.attr.state_stop};
     private static final int[] STATE_SET_PAUSE =
@@ -28,6 +33,7 @@ public class RemoterToolbarFragment extends BaseFragment implements RemoterContr
     private RemoterToolbarPresenter mPresenter = new RemoterToolbarPresenter();
     private ImageButton videoButton;
     private TextView videoState;
+    private TextView mMsgTextView;
 
     public static RemoterToolbarFragment newInstance() {
 
@@ -70,6 +76,8 @@ public class RemoterToolbarFragment extends BaseFragment implements RemoterContr
     public void initView(View view) {
         videoButton = (ImageButton) view.findViewById(R.id.videoButton);
         videoState = (TextView) view.findViewById(R.id.videoState);
+        mMsgTextView = (TextView) view.findViewById(R.id.tv_toolbar_msg);
+        mMsgTextView.setTextColor(Color.WHITE);
     }
 
     @Override
@@ -86,4 +94,11 @@ public class RemoterToolbarFragment extends BaseFragment implements RemoterContr
         playState = true;
     }
 
+    @Override
+    public void showMag(String msg, int msgType) {
+        if (mMsgTextView != null) {
+            mMsgTextView.setText(msg);
+        }
+
+    }
 }

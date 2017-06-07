@@ -13,6 +13,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+/**
+ * @deprecated
+ */
 public class ClientThread implements Runnable {
     public static final String TAG = "ClientThread";
     private static Socket mSocket;

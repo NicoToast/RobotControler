@@ -19,6 +19,7 @@ import mixturedd.robotcontroler.BaseActivity;
 import mixturedd.robotcontroler.BaseFragment;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.R;
+import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.remoter.ControlCode;
 import mixturedd.robotcontroler.remoter.RemoterActivity;
 import mixturedd.robotcontroler.settings.SettingsActivity;
@@ -33,8 +34,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
         SharedPreferences.OnSharedPreferenceChangeListener,
         EasyPermissions.PermissionCallbacks {
     private static final String TAG = "MainActivity";
+    public static final String ARGS_CONFIG = "CONFIG";
     private MainPresenter mPresenter = new MainPresenter();
-
+    private Config mConfig = new Config();
     private FloatingActionButton mFab;
 
     @Override
@@ -62,9 +64,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
     @Override
     protected void parsePreference() {
         super.parsePreference();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        SEVER_IP = settings.getString(getString(R.string.pref_key_server_ip), "192.168.1.1");
-        SEVER_URL = "http://" + SEVER_IP;
+        mPresenter.loadSettings(this, mConfig);
     }
 
     @Override
@@ -128,7 +128,9 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @Override
     public void showRemoterUI() {
-        startActivity(new Intent(this, RemoterActivity.class));
+        Intent intent = new Intent(this, RemoterActivity.class);
+        intent.putExtra(ARGS_CONFIG, mConfig);
+        startActivity(intent);
     }
 
     @Override
@@ -138,9 +140,7 @@ public class MainActivity extends BaseActivity implements MainContract.View,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        ControlCode.SEVER_IP = sharedPreferences.getString(key, "192.168.1.1");
-        SEVER_URL = "http://" + SEVER_IP;
-        Log.d(TAG, "onSharedPreferenceChanged:" + ControlCode.SEVER_URL);
+        // TODO: 2017/6/2  onSharedPreferenceChanged
     }
 
     @Override

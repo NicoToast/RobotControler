@@ -8,4 +8,5 @@
 
     <color name="video_bg">#838382</color>
 
+    <color name="toolbar_bg">#8c000000</color>
 </resources>

@@ -7,8 +7,8 @@ android {
         applicationId "mixturedd.robotcontroler"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 10
-        versionName "2.15"
+        versionCode 14
+        versionName "2.31"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

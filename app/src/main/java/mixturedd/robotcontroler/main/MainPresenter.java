@@ -4,13 +4,20 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+
+import com.google.common.collect.Interner;
 
 import mixturedd.robotcontroler.BaseActivity;
 import mixturedd.robotcontroler.R;
+import mixturedd.robotcontroler.model.Config;
+import mixturedd.robotcontroler.model.ServerConfig;
+import mixturedd.robotcontroler.model.VideoConfig;
 import mixturedd.robotcontroler.unit.StateCheck;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -98,7 +105,7 @@ public class MainPresenter implements MainContract.Presenter {
         final Context ctx = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 判断是否有SYSTEM_ALERT_WINDOW权限
-            if(!Settings.canDrawOverlays(ctx)) {
+            if (!Settings.canDrawOverlays(ctx)) {
                 viewContract.showMsgDialog("权限申请", "使用前需要授予\"在其他应用之上显示内容\"的权限，授予后即将会提升用户体验。",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -152,6 +159,39 @@ public class MainPresenter implements MainContract.Presenter {
     public void crateMsgDialog(String title, String msg, DialogInterface.OnClickListener positive,
                                DialogInterface.OnClickListener negative) {
         viewContract.showMsgDialog(title, msg, positive, negative);
+    }
+
+    @Override
+    public void loadSettings(Context context, Config config) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        config.setServerConfig(ServerConfig.newInstance(
+                settings.getString(
+                        context.getString(R.string.pref_key_server_ip),
+                        context.getString(R.string.pref_default_server_ip)),
+                Integer.parseInt(settings.getString(
+                        context.getString(R.string.pref_key_server_port),
+                        context.getString(R.string.pref_default_server_port))
+                )
+        ));
+        config.setVideoConfig(VideoConfig.newInstance(
+                settings.getString(
+                        context.getString(R.string.pref_key_video_ip),
+                        context.getString(R.string.pref_default_server_ip)
+                ),
+                Integer.parseInt(settings.getString(
+                        context.getString(R.string.pref_key_video_port),
+                        context.getString(R.string.pref_default_video_port)
+                )),
+                Integer.parseInt(settings.getString(
+                        context.getString(R.string.pref_key_video_action),
+                        context.getString(R.string.pref_default_video_action))
+                )
+        ));
+    }
+
+    @Override
+    public void updateSettings(Context context, Config config) {
+
     }
 
     @Override

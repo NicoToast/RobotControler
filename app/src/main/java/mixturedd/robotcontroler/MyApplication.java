@@ -3,7 +3,7 @@ package mixturedd.robotcontroler;
 import android.app.Application;
 import android.view.WindowManager;
 
-import mixturedd.robotcontroler.unit.CrashHandler;
+import mixturedd.robotcontroler.task.ThreadManager;
 
 /**
  * MyApplication.java
@@ -21,8 +21,12 @@ public class MyApplication extends Application {
         super.onCreate();
         mLayoutParams = new WindowManager.LayoutParams();
 
-        CrashHandler.getInstance().init(this);//全局捕获崩溃异常日志并保存本地
+//        CrashHandler.getInstance().init(this);//全局捕获崩溃异常日志并保存本地
+
+        ThreadManager.getInstance();
     }
+
+
 
     public WindowManager.LayoutParams getLayoutParams() {
         return mLayoutParams;

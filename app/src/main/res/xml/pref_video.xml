@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_server_ip"
+        android:inputType="textWebEditText"
+        android:key="@string/pref_key_video_ip"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_video_ip" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_video_port"
+        android:inputType="textWebEditText"
+        android:key="@string/pref_key_video_port"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_video_port" />
+
+    <ListPreference
+        android:entries="@array/pref_option_video_action"
+        android:entryValues="@array/pref_option_value_video_action"
+        android:key="@string/pref_key_video_action"
+        android:defaultValue="@string/pref_default_video_action"
+        android:title="@string/pref_title_video_action" />
+
     <SwitchPreference
         android:defaultValue="false"
+        android:enabled="false"
         android:key="video_opengl"
         android:summary="@string/pref_description_video_opengl"
         android:title="@string/pref_title_video_opengl" />
+
 </PreferenceScreen>

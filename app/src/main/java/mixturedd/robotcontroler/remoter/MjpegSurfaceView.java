@@ -37,7 +37,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
     private MjpegViewThread thread;
     private MjpegInputStream mIn = null;
-    private Bitmap videoWarningBitmap;
+//    private Bitmap videoWarningBitmap;
     private boolean showFps = false;
     private boolean mRun = false;
     private boolean surfaceDone = false;
@@ -59,25 +59,25 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             mSurfaceHolder = surfaceHolder;
         }
 
-        private Rect destRect(int bmw, int bmh) {
+        private Rect destRect(int bitmapCachew, int bitmapCacheh) {
             int tempx;
             int tempy;
             if (displayMode == MjpegSurfaceView.SIZE_STANDARD) {
-                tempx = (dispWidth / 2) - (bmw / 2);
-                tempy = (dispHeight / 2) - (bmh / 2);
-                return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
+                tempx = (dispWidth / 2) - (bitmapCachew / 2);
+                tempy = (dispHeight / 2) - (bitmapCacheh / 2);
+                return new Rect(tempx, tempy, bitmapCachew + tempx, bitmapCacheh + tempy);
             }
             if (displayMode == MjpegSurfaceView.SIZE_BEST_FIT) {
-                float bmasp = (float) bmw / (float) bmh;
-                bmw = dispWidth;
-                bmh = (int) (dispWidth / bmasp);
-                if (bmh > dispHeight) {
-                    bmh = dispHeight;
-                    bmw = (int) (dispHeight * bmasp);
+                float bitmapCacheasp = (float) bitmapCachew / (float) bitmapCacheh;
+                bitmapCachew = dispWidth;
+                bitmapCacheh = (int) (dispWidth / bitmapCacheasp);
+                if (bitmapCacheh > dispHeight) {
+                    bitmapCacheh = dispHeight;
+                    bitmapCachew = (int) (dispHeight * bitmapCacheasp);
                 }
-                tempx = (dispWidth / 2) - (bmw / 2);
-                tempy = (dispHeight / 2) - (bmh / 2);
-                return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
+                tempx = (dispWidth / 2) - (bitmapCachew / 2);
+                tempy = (dispHeight / 2) - (bitmapCacheh / 2);
+                return new Rect(tempx, tempy, bitmapCachew + tempx, bitmapCacheh + tempy);
             }
             if (displayMode == MjpegSurfaceView.SIZE_FULLSCREEN) {
                 return new Rect(0, 0, dispWidth, dispHeight);
@@ -97,37 +97,39 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             p.getTextBounds(text, 0, text.length(), b);
             int bwidth = b.width() + 2;
             int bheight = b.height() + 2;
-            Bitmap bm = Bitmap.createBitmap(bwidth, bheight, Bitmap.Config.ARGB_8888);
-            Canvas c = new Canvas(bm);
+            Bitmap bitmapCache = Bitmap.createBitmap(bwidth, bheight, Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(bitmapCache);
             p.setColor(overlayBackgroundColor);
             c.drawRect(0, 0, bwidth, bheight, p);
             p.setColor(overlayTextColor);
             c.drawText(text, -b.left + 1, (bheight / 2) - ((p.ascent() + p.descent()) / 2) + 1, p);
-            return bm;
+            return bitmapCache;
         }
 
         public void run() {
             start = System.currentTimeMillis();
             PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.DST_OVER);
-            Bitmap bm;
+//            Bitmap bitmapCache;
             int width;
             int height;
             Rect destRect = null;
             Canvas c = null;
             Paint p = new Paint();
             String fps;
+            Bitmap bitmapCache = null;
             while (mRun) {
                 if (surfaceDone) {
                     try {
                         c = mSurfaceHolder.lockCanvas();
                         synchronized (mSurfaceHolder) {
                             try {
-                                bm = mIn.readMjpegFrame();
-                                if (bm != null){
-                                    destRect = destRect(bm.getWidth(), bm.getHeight());
-                                    c.drawColor(Color.LTGRAY);
+                                bitmapCache = mIn.readMjpegFrame();
+                                if (bitmapCache != null){
+                                    destRect = destRect(bitmapCache.getWidth(), bitmapCache.getHeight());
+                                    //设置视频背景
+                                    c.drawColor(Color.BLACK);
                                     if (destRect != null){
-                                        c.drawBitmap(bm, null, destRect, p);
+                                        c.drawBitmap(bitmapCache, null, destRect, p);
                                     }
                                 }
                                 //fps显示
@@ -159,6 +161,10 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                     }
                 }
             }
+            if(bitmapCache != null && !bitmapCache.isRecycled()){
+                bitmapCache.recycle();
+                bitmapCache = null;
+            }
         }
     }
 
@@ -189,6 +195,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public void startPlayback() {
         if (mIn != null) {
             mRun = true;
+//            ThreadManager.getInstance().getThreadPoolExecutor().execute(thread);
             thread.start();
         }
     }
@@ -222,6 +229,11 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         surfaceDone = false;
+/*        if(bitmapCache != null && !bitmapCache.isRecycled()){
+            bitmapCache.recycle();
+            bitmapCache = null;
+        }
+        ;*/
         stopPlayback();
     }
 

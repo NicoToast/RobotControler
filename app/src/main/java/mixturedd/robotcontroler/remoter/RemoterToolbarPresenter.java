@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_VISIBLE;
 
 /**
  * RemoterToolbarPresenter.java
@@ -38,6 +39,11 @@ public class RemoterToolbarPresenter implements RemoterContract.ToolbarPresenter
     public void setStatePause() {
         mParentPresenter.stopMjpeg();
         mToolbarView.onVideoPause();
+    }
+
+    @Override
+    public void sendMsg(String msg, int msgType) {
+        mToolbarView.showMag(msg, msgType);
     }
 
     @Override

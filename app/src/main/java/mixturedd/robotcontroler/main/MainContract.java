@@ -7,6 +7,7 @@ import android.content.Intent;
 import mixturedd.robotcontroler.BaseActivity;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.BaseView;
+import mixturedd.robotcontroler.model.Config;
 
 /**
  * MainContract.java
@@ -46,21 +47,11 @@ public interface MainContract {
 
         void crateMsgDialog(final String title, String msg, DialogInterface.OnClickListener positive,
                            DialogInterface.OnClickListener negative);
+
+        void loadSettings(Context context, Config config);
+
+        void updateSettings(Context context, Config config);
     }
 
-    interface NoConnView extends BaseView.FragBaseView {
-        void animatedWifi();
-    }
 
-    interface NoConnPresenter extends BasePresenter.FragBasePresenter<NoConnView> {
-        void refresh();
-    }
-
-    interface ConnView extends BaseView.FragBaseView {
-        void showRemoterUI();
-    }
-
-    interface ConnPresenter extends BasePresenter.FragBasePresenter<ConnView> {
-        void enterRemoter();
-    }
 }

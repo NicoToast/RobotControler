@@ -140,9 +140,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if(this.getIntent() != null){
+            if (this.getIntent() != null) {
                 this.onBackPressed();
-            }else {
+            } else {
                 startActivity(new Intent(this, MainActivity.class));
             }
             return true;
@@ -187,15 +187,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_server_ip)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_server_port)));
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                if(getActivity().getIntent() != null){
+                if (getActivity().getIntent() != null) {
                     getActivity().onBackPressed();
-                }else {
+                } else {
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 return true;
@@ -212,15 +213,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_video);
             setHasOptionsMenu(true);
 
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_video_ip)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_video_port)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_video_action)));
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                if(getActivity().getIntent() != null){
+                if (getActivity().getIntent() != null) {
                     getActivity().onBackPressed();
-                }else {
+                } else {
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 return true;
@@ -228,6 +232,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class RemoterPreferenceFragment extends PreferenceFragment {
         @Override
@@ -243,9 +248,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                if(getActivity().getIntent() != null){
+                if (getActivity().getIntent() != null) {
                     getActivity().onBackPressed();
-                }else {
+                } else {
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 return true;

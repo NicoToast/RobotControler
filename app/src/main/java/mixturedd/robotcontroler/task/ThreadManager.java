@@ -1,6 +1,5 @@
-package mixturedd.robotcontroler;
+package mixturedd.robotcontroler.task;
 
-import java.io.Serializable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,10 +9,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 public class ThreadManager {
 
@@ -30,7 +31,7 @@ public class ThreadManager {
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
 		private final AtomicInteger mCount = new AtomicInteger(1);
 
-		public Thread newThread(Runnable r) {
+		public Thread newThread(@NonNull Runnable r) {
 			return new Thread(r, "ThreadManagerTask #" + mCount.getAndIncrement());
 		}
 	};
@@ -38,13 +39,11 @@ public class ThreadManager {
 	private static final BlockingQueue<Runnable> sPoolWorkQueue =
 			new LinkedBlockingQueue<>(128);
 
-	private MyHandler myHandler;
+	private WorkHandler mWorkHandler;
 
-	private UiHandler uiHandler;
+	private UiHandler mUIHandler;
 
-//	private ThreadPoolExecutor threadPoolExecutor;
-
-	public static final Executor THREAD_POOL_EXECUTOR;
+	private static final Executor THREAD_POOL_EXECUTOR;
 
 	static {
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
@@ -54,9 +53,14 @@ public class ThreadManager {
 		THREAD_POOL_EXECUTOR = threadPoolExecutor;
 	}
 
-	// private HandlerThread handlerThread;
+	 private HandlerThread handlerThread = new HandlerThread("WorksThread", Thread.MIN_PRIORITY){
+         @Override
+         protected void onLooperPrepared() {
 
-	private static volatile ThreadManager threadManager = new ThreadManager();
+         }
+     };
+
+	private static volatile ThreadManager threadManager;
 
 	private ThreadManager() {
 	}
@@ -84,6 +88,11 @@ public class ThreadManager {
 	 *            标签名
 	 ********/
 	public void putLongTime(final ThreadManagerCallBack threadManagerCallBack, final String tagH) {
+        ThreadContent content = getThreadContent(threadManagerCallBack, null, tagH, ThreadContent.INCLUDE_NO_UI);
+        HandlerThread worksThread = new HandlerThread("LongTimeWorksThread", Thread.MIN_PRIORITY);
+        mWorkHandler = new WorkHandler(worksThread.getLooper());
+        mUIHandler = new UiHandler();
+        THREAD_POOL_EXECUTOR.execute(worksThread);
 	}
 
 	/*******
@@ -167,22 +176,33 @@ public class ThreadManager {
 	 *            特定时间
 	 ********/
 	public void putShortTimeAtTime(ThreadManagerCallBack threadManagerCallBack, String tagH, long uptimeMillis) {
+
 	}
 
 	/*********** 异步操作 ***************/
-	private static class MyHandler extends Handler {
-
-		public MyHandler() {
+	private static class WorkHandler extends Handler {
+		private ThreadManagerCallBack threadManagerCallBack;
+		public WorkHandler() {
 		}
 
-		public MyHandler(Looper looper) {
+		public WorkHandler(Looper looper) {
 			super(looper);
 		}
 
 		@Override
 		public void handleMessage(Message msg) {
+            if (threadManagerCallBack != null) {
+//                threadManagerCallBack.threadCallBack();
+            }
 		}
 
+		public void setThreadManagerCallBack(ThreadManagerCallBack threadManagerCallBack) {
+			this.threadManagerCallBack = threadManagerCallBack;
+		}
+
+        public void removeThreadManagerCallBack(){
+            threadManagerCallBack = null;
+        }
 	}
 
 	/*********** UI操作 ***********/
@@ -195,11 +215,20 @@ public class ThreadManager {
 		}
 	}
 
+	private ThreadContent getThreadContent(ThreadManagerCallBack callBack, ThreadManagerUiCallBack uiCallBack, String tagH, int type){
+        ThreadContent threadContent = new ThreadContent();
+        threadContent.setThreadManagerCallBack(callBack);
+        threadContent.setThreadManagerUiCallBack(uiCallBack);
+        threadContent.setTagH(tagH);
+        threadContent.setThreadType(type);
+        return threadContent;
+    }
+
 	private class ThreadContent implements Parcelable {
-		String tagH;
-		int threadType;
 		public static final int INCLUDE_UI = 1;
 		public static final int INCLUDE_NO_UI = 0;
+		String tagH;
+		int threadType;
 		ThreadManagerCallBack threadManagerCallBack;
 		ThreadManagerUiCallBack threadManagerUiCallBack;
 
@@ -284,6 +313,7 @@ public class ThreadManager {
 	public class ThreadState implements Parcelable {
 		int FLAG;
 
+
 		@Override
 		public int describeContents() {
 			return 0;
@@ -297,7 +327,7 @@ public class ThreadManager {
 		public ThreadState() {
 		}
 
-		protected ThreadState(Parcel in) {
+		ThreadState(Parcel in) {
 			this.FLAG = in.readInt();
 		}
 

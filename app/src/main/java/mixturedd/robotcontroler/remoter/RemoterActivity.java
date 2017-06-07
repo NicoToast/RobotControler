@@ -1,6 +1,7 @@
 package mixturedd.robotcontroler.remoter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,13 +10,17 @@ import android.view.View;
 import mixturedd.robotcontroler.BaseActivity;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.R;
+import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.unit.ActivityUtils;
+
+import static mixturedd.robotcontroler.main.MainActivity.ARGS_CONFIG;
 
 public class RemoterActivity extends BaseActivity implements RemoterContract.ActView {
     private static final String TAG = "RemoterActivity";
 
     private RemoterActPresenter mPresenter = new RemoterActPresenter();
     private View contentView;
+    private Config mConfig;
 
     private final Handler mHideHandler = new Handler();
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -52,6 +57,11 @@ public class RemoterActivity extends BaseActivity implements RemoterContract.Act
     @Override
     protected void onInitPresenters() {
         mPresenter.init(this);
+    }
+
+    @Override
+    protected void parseArgumentsFromIntent(Intent argIntent) {
+        mConfig = argIntent.getExtras().getParcelable(ARGS_CONFIG);
     }
 
     @Override
@@ -105,7 +115,7 @@ public class RemoterActivity extends BaseActivity implements RemoterContract.Act
                 (RemoterFragment) getSupportFragmentManager().findFragmentById(R.id.remoterContentFrame);
         if (remoterFragment == null) {
             // Create the fragment
-            remoterFragment = RemoterFragment.newInstance();
+            remoterFragment = RemoterFragment.newInstance(mConfig);
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), remoterFragment, R.id.remoterContentFrame, remoterFragment.getClass().getName());
         }

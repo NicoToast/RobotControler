@@ -125,12 +125,16 @@ public interface RemoterContract {
         void onVideoPlay();
 
         void onVideoPause();
+
+        void showMag(String msg, int msgType);
     }
 
     interface ToolbarPresenter extends BasePresenter.FragBasePresenter<ToolbarView> {
         void setStatePlay();
 
         void setStatePause();
+
+        void sendMsg(String msg, int msgType);
     }
 
     interface HandView extends BaseView.FragBaseView{

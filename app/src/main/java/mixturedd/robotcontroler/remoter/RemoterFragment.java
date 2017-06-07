@@ -1,5 +1,7 @@
 package mixturedd.robotcontroler.remoter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -20,7 +22,10 @@ import mixturedd.robotcontroler.BaseFragment;
 import mixturedd.robotcontroler.BasePresenter;
 import mixturedd.robotcontroler.MyApplication;
 import mixturedd.robotcontroler.R;
+import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.unit.ActivityUtils;
+
+import static mixturedd.robotcontroler.main.MainActivity.ARGS_CONFIG;
 
 public class RemoterFragment extends BaseFragment implements RemoterContract.FragView {
     private static final int HAND_COUNT = 4;
@@ -46,17 +51,21 @@ public class RemoterFragment extends BaseFragment implements RemoterContract.Fra
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams param;
     private TextView mArmValue;
-    private View mFloatView;
+    //    private View mFloatView;
     protected static boolean infoVisible;
     protected static boolean handVisible;
     protected static boolean floatViewVisible;
     protected static boolean toolbarVisible;
 
+    private Config mConfig;
+
+
     private boolean mDrawOverlaysPermissions;
 
-    public static RemoterFragment newInstance() {
+    public static RemoterFragment newInstance(Config config) {
 
         Bundle args = new Bundle();
+        args.putParcelable(ARGS_CONFIG, config);
         RemoterFragment fragment = new RemoterFragment();
         fragment.setArguments(args);
         return fragment;
@@ -76,13 +85,12 @@ public class RemoterFragment extends BaseFragment implements RemoterContract.Fra
     protected void onInitPresenters(View view) {
         mPresenter.init(this, view);
         mPresenter.initFragmentsPresenter(infoFragment, handFragment, toolbarFragment);
+        mPresenter.setConfig(mConfig);
     }
 
     @Override
-    protected void parsePreference() {
-        super.parsePreference();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mActivity);
-//        settings.getBoolean()
+    protected void parseArgumentsFromBundle(Bundle argBundle) {
+        mConfig = argBundle.getParcelable(ARGS_CONFIG);
     }
 
     @Override
@@ -130,17 +138,13 @@ public class RemoterFragment extends BaseFragment implements RemoterContract.Fra
         mDetectorView.setOnGestureDetectorListener(new GestureDetectorLayout.OnGestureDetectorListener() {
             @Override
             public void onScrolling(float value, String action) {
-                if (mDrawOverlaysPermissions) {
-                    mArmValue.setText(String.format(getString(R.string.unit_ratio), action, (int)value));
-                }
+                mArmValue.setText(String.format(getString(R.string.unit_ratio), action, (int) value));
             }
         });
         mDetectorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDrawOverlaysPermissions){
-                    mPresenter.toggleToolbar(VIEW_VISIBLE_AUTO);
-                }
+                mPresenter.toggleToolbar(VIEW_VISIBLE_AUTO);
             }
         });
     }
@@ -237,7 +241,7 @@ public class RemoterFragment extends BaseFragment implements RemoterContract.Fra
     }
 
     private void addWindowView2Window() {
-        mWindowManager.addView(mFloatView, param);
+//        mWindowManager.addView(mFloatView, param);
     }
 
     @Override
@@ -250,31 +254,34 @@ public class RemoterFragment extends BaseFragment implements RemoterContract.Fra
     @Override
     public void onStop() {
         super.onStop();
-        mWindowManager.removeViewImmediate(mFloatView);
+//        mWindowManager.removeViewImmediate(mFloatView);
         mDrawOverlaysPermissions = false;
     }
 
     @Override
     public void hideFloatView() {
         floatViewVisible = false;
-        mFloatView.setAlpha(FLOAT_VIEW_MAX_ALPHA);
-        mFloatView.setVisibility(View.VISIBLE);
+        mArmValue.setAlpha(FLOAT_VIEW_MAX_ALPHA);
+        mArmValue.setVisibility(View.VISIBLE);
 
-        mFloatView.animate()
+        mArmValue.animate()
                 .alpha(FLOAT_VIEW_MIN_ALPHA)
                 .setDuration(mShortAnimationDuration)
-                .setListener(null);
-
-        mFloatView.setVisibility(View.GONE);
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mArmValue.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override
     public void showFloatView() {
         floatViewVisible = true;
-        mFloatView.setAlpha(FLOAT_VIEW_MIN_ALPHA);
-        mFloatView.setVisibility(View.VISIBLE);
+        mArmValue.setAlpha(FLOAT_VIEW_MIN_ALPHA);
+        mArmValue.setVisibility(View.VISIBLE);
 
-        mFloatView.animate()
+        mArmValue.animate()
                 .alpha(FLOAT_VIEW_MAX_ALPHA)
                 .setDuration(mShortAnimationDuration)
                 .setListener(null);

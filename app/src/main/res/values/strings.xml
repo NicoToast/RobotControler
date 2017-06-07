@@ -48,4 +48,23 @@
     <string name="pref_header_remoter">控制器</string>
     <string name="pref_header_description_remoter">小车控制的配置</string>
     <string name="pref_key_server_ip">server_ip</string>
+    <string name="pref_key_server_port">server_port</string>
+    <string name="pref_default_server_port">2001</string>
+    <string name="pref_title_server_port">服务器端口</string>
+    <string name="pref_key_video_ip">video_ip</string>
+    <string name="pref_title_video_ip">视频流IP地址</string>
+    <string name="pref_default_video_port">8080</string>
+    <string name="pref_key_video_port">video_port</string>
+    <string name="pref_title_video_port">视频流端口</string>
+    <string name="pref_key_video_action">视频模式</string>
+    <string name="pref_title_video_action">视频模式</string>
+    <string name="pref_default_video_action">0</string>
+    <string-array name="pref_option_video_action">
+        <item>stream</item>
+        <item>snapshot</item>
+    </string-array>
+    <string-array name="pref_option_value_video_action">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 </resources>

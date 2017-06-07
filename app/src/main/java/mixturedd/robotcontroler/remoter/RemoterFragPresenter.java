@@ -2,24 +2,17 @@ package mixturedd.robotcontroler.remoter;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import mixturedd.robotcontroler.BaseActivity;
+import mixturedd.robotcontroler.model.Config;
+import mixturedd.robotcontroler.task.Client;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static mixturedd.robotcontroler.remoter.ControlCode.SEVER_URL;
-import static mixturedd.robotcontroler.remoter.ControlCode.VIDEO_MODEL_STREAM;
-import static mixturedd.robotcontroler.remoter.ControlCode.VIDEO_PORT;
 import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_INVISIBLE;
 import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_VISIBLE;
 import static mixturedd.robotcontroler.remoter.RemoterFragment.VIEW_VISIBLE_AUTO;
@@ -38,7 +31,7 @@ import static mixturedd.robotcontroler.remoter.RemoterFragment.toolbarVisible;
 
 public class RemoterFragPresenter implements RemoterContract.FragPresenter {
     private static final String TAG = "RemoterFragPresenter";
-    private static final String URL = SEVER_URL + ":" + VIDEO_PORT + "/?action=" + VIDEO_MODEL_STREAM;
+//    private static final String URL = SEVER_URL + ":" + VIDEO_PORT + "/?action=" + VIDEO_MODEL_STREAM;
     private static final String COMM_MOVE_BACKWARDS = "FF000200FF";
     private static final String COMM_MOVE_FORWARD = "FF000100FF";
     private static final String COMM_MOVE_RIGHT = "FF000400FF";
@@ -47,10 +40,12 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
     private MjpegSurfaceView mMjpegSurfaceView;
     private RemoterContract.InfoPresenter mInfoPresenter;
     private RemoterContract.ToolbarPresenter mToolbarPresenter;
-    private ClientThread mClient;
+    //    private ClientThread mClient;
+    private Client mClient;
     private BaseActivity mActivity;
     private RemoterContract.FragView mFragView;
-    private DrawTask mDrawTask;
+    private Config mConfig;
+//    private DrawTask mDrawTask;
 
     @Override
     public void init(RemoterContract.FragView fragView, View view) {
@@ -61,27 +56,48 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
     void initFragmentsPresenter(RemoterInfoFragment infoFragment, RemoterHandFragment handFragment, RemoterToolbarFragment toolbarFragment) {
         mInfoPresenter = (RemoterInfoPresenter) infoFragment.getPresenters()[0];
         mToolbarPresenter = (RemoterToolbarPresenter) toolbarFragment.getPresenters()[0];
+
+    }
+
+    void setConfig(Config config) {
+        mConfig = config;
     }
 
     @Override
     public void orderSendBySocket(String order) {
-        if(mClient.isClientThreadRun()){
+/*        if(mClient.isClientThreadRun()){
             Message msg = new Message();
             msg.what = 0x345;
             msg.obj = order;
             mClient.getSendHandler().sendMessage(msg);
+        }*/
+        try {
+            if (mClient.isClientRunning()) {
+                mClient.sendOrder(order);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
     private void starSocketClient() {
-        mClient = ClientThread.getInstance().setSendMessageHandler(new MsgReceiveHandler(mInfoPresenter));
-        new Thread(mClient).start();
+        mClient = new Client(mInfoPresenter, mToolbarPresenter);
+/*        mClient = ClientThread.getInstance().setSendMessageHandler(new MsgReceiveHandler(mInfoPresenter));
+        new Thread(mClient).start();*/
+        mClient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mConfig.getServerConfig());
     }
 
     private void stopSocketClient() {
-        if (mClient != null) {
-            mClient.stopSocket();
+        try {
+            if (mClient.isClientRunning()) {
+                mClient.stopClient();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+/*        if (mClient != null) {
+            mClient.stopSocket();
+        }*/
     }
 
     void setSurfaceView(MjpegSurfaceView view) {
@@ -102,10 +118,13 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
             Log.i(TAG, "视频为空");
             return;
         }
-        if (mDrawTask == null){
+/*        if (mDrawTask == null){
             mDrawTask = new DrawTask();
             mDrawTask.execute(URL);
-        }
+        }*/
+        String url = mConfig.getVideoConfig().getUrl();
+        mClient.openCam(url, mMjpegSurfaceView);
+        Log.d(TAG, "video url:" + url);
     }
 
     /**
@@ -118,20 +137,16 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
             return;
         }
         mMjpegSurfaceView.stopPlayback();
-        if (mDrawTask != null && !mDrawTask.isCancelled()){
-            mDrawTask.cancel(true);
-        }
     }
 
     @Override
     public void refreshInputStream() {
-        mDrawTask = new DrawTask();
-        mDrawTask.execute(URL);
+
     }
 
     @Override
     public void toggleFloatView(int visible) {
-        switch (visible){
+        switch (visible) {
             case VIEW_VISIBLE_AUTO:
                 if (floatViewVisible) {
                     mFragView.hideFloatView();
@@ -150,7 +165,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     @Override
     public void toggleToolbar(int visible) {
-        switch (visible){
+        switch (visible) {
             case VIEW_VISIBLE_AUTO:
                 if (toolbarVisible) {
                     mFragView.hideToolbar();
@@ -169,7 +184,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     @Override
     public void toggleInfo(int visible) {
-        switch (visible){
+        switch (visible) {
             case VIEW_VISIBLE_AUTO:
                 if (infoVisible) {
                     mFragView.hideInfo();
@@ -188,7 +203,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     @Override
     public void toggleHand(int visible) {
-        switch (visible){
+        switch (visible) {
             case VIEW_VISIBLE_AUTO:
                 if (handVisible) {
                     mFragView.hideHand();
@@ -292,7 +307,7 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
 
     }
 
-    private class DrawTask extends AsyncTask<String, Void, MjpegInputStream> {
+/*    private class DrawTask extends AsyncTask<String, Void, MjpegInputStream> {
         private static final String TAG = "DrawTask";
 
         @Override
@@ -331,42 +346,5 @@ public class RemoterFragPresenter implements RemoterContract.FragPresenter {
             mMjpegSurfaceView.setDisplayMode(MjpegSurfaceView.SIZE_BEST_FIT);
             mMjpegSurfaceView.showFps(false);
         }
-    }
-
-    private static class MsgReceiveHandler extends Handler {
-        private RemoterContract.InfoPresenter mInfoPresenter;
-
-        MsgReceiveHandler(RemoterContract.InfoPresenter infoPresenter) {
-            this.mInfoPresenter = infoPresenter;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            // 如果消息来自于子线程
-            if (msg.what == 0x123) {
-                String string = msg.obj.toString();
-                int colonIndex = string.indexOf(":");
-                if (colonIndex == -1) {
-                    return;
-                }
-                StringBuffer stringBuffer = new StringBuffer(string);
-                String infoCategory = stringBuffer.substring(0, colonIndex);
-                String value = stringBuffer.substring(string.indexOf(":") + 1, string.length());
-                switch (infoCategory) {
-                    case "Distance":
-                        mInfoPresenter.postDistance(value);
-                        break;
-                    case "Humidity":
-                        mInfoPresenter.postHumidity(value);
-                        break;
-                    case "Temperature":
-                        mInfoPresenter.postTemperature(value);
-                        break;
-                    case "Gases":
-                        mInfoPresenter.postGas(value);
-                        break;
-                }
-            }
-        }
-    }
+    }*/
 }
