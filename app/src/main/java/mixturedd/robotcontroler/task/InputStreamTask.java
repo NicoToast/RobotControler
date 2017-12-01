@@ -13,7 +13,7 @@ import mixturedd.robotcontroler.remoter.MjpegInputStream;
 
 /**
  * InputStreamTask.java
- * Description :
+ * Description :异步摄像头任务
  * <p>
  * Created by MixtureDD on 2017/5/29 21:00.
  * Copyright © 2017 MixtureDD. All rights reserved.

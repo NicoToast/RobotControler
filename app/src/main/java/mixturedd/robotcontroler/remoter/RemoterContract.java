@@ -3,9 +3,9 @@ package mixturedd.robotcontroler.remoter;
 import android.view.MotionEvent;
 import android.view.View;
 
-import mixturedd.robotcontroler.BaseActivity;
-import mixturedd.robotcontroler.BasePresenter;
-import mixturedd.robotcontroler.BaseView;
+import mixturedd.robotcontroler.base.BaseActivity;
+import mixturedd.robotcontroler.base.BasePresenter;
+import mixturedd.robotcontroler.base.BaseView;
 
 /**
  * Created by hp on 2016/11/21 17:59.

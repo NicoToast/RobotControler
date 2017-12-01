@@ -4,30 +4,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import mixturedd.robotcontroler.BaseActivity;
-import mixturedd.robotcontroler.BaseFragment;
-import mixturedd.robotcontroler.BasePresenter;
+import mixturedd.robotcontroler.base.BaseActivity;
+import mixturedd.robotcontroler.base.BasePresenter;
 import mixturedd.robotcontroler.R;
 import mixturedd.robotcontroler.model.Config;
-import mixturedd.robotcontroler.remoter.ControlCode;
 import mixturedd.robotcontroler.remoter.RemoterActivity;
 import mixturedd.robotcontroler.settings.SettingsActivity;
-import mixturedd.robotcontroler.unit.ActivityUtils;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static mixturedd.robotcontroler.remoter.ControlCode.SEVER_IP;
-import static mixturedd.robotcontroler.remoter.ControlCode.SEVER_URL;
 
 
 public class MainActivity extends BaseActivity implements MainContract.View,

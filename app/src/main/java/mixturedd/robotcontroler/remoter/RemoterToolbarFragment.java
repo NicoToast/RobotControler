@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import mixturedd.robotcontroler.BaseFragment;
-import mixturedd.robotcontroler.BasePresenter;
+import mixturedd.robotcontroler.base.BaseFragment;
+import mixturedd.robotcontroler.base.BasePresenter;
 import mixturedd.robotcontroler.R;
-import mixturedd.robotcontroler.widgets.MsgSwitcher;
 
 /**
  * RemoterToolbarFragment.java

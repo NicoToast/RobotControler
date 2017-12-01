@@ -6,7 +6,7 @@ import mixturedd.robotcontroler.remoter.MjpegSurfaceView;
 
 /**
  * ClientContract.java
- * Description :
+ * Description :客户端操作接口
  * <p>
  * Created by MixtureDD on 2017/5/29 11:12.
  * Copyright © 2017 MixtureDD. All rights reserved.

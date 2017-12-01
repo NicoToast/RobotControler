@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  * SendMsgTask.java
- * Description :
+ * Description :异步发送命令任务
  * <p>
  * Created by MixtureDD on 2017/5/29 11:28.
  * Copyright © 2017 MixtureDD. All rights reserved.
@@ -37,6 +37,11 @@ public class SendMsgTask extends AsyncTask<String, Void, Boolean> {
         return false;
     }
 
+    /**
+     *
+     * @param hexString 将十六进制的字符串转换为字节流 例：FF000100FF -> {-1, 0, 1, 0, -1}
+     * @return 十六进制字节流
+     */
     private byte[] hexStringToBytes(String hexString) {
         if (hexString == null || hexString.equals("")) {
             return null;

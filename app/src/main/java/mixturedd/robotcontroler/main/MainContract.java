@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import mixturedd.robotcontroler.BaseActivity;
-import mixturedd.robotcontroler.BasePresenter;
-import mixturedd.robotcontroler.BaseView;
+import mixturedd.robotcontroler.base.BaseActivity;
+import mixturedd.robotcontroler.base.BasePresenter;
+import mixturedd.robotcontroler.base.BaseView;
 import mixturedd.robotcontroler.model.Config;
 
 /**

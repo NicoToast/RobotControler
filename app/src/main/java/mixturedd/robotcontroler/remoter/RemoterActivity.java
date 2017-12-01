@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
-import mixturedd.robotcontroler.BaseActivity;
-import mixturedd.robotcontroler.BasePresenter;
+import mixturedd.robotcontroler.base.BaseActivity;
+import mixturedd.robotcontroler.base.BasePresenter;
 import mixturedd.robotcontroler.R;
 import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.unit.ActivityUtils;

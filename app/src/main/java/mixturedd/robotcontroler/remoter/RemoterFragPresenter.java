@@ -8,7 +8,7 @@ import android.view.View;
 
 import java.io.IOException;
 
-import mixturedd.robotcontroler.BaseActivity;
+import mixturedd.robotcontroler.base.BaseActivity;
 import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.task.Client;
 

@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
 
-import mixturedd.robotcontroler.BaseFragment;
-import mixturedd.robotcontroler.BasePresenter;
+import mixturedd.robotcontroler.base.BaseFragment;
+import mixturedd.robotcontroler.base.BasePresenter;
 import mixturedd.robotcontroler.R;
 
 /**

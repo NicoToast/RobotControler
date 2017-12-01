@@ -11,9 +11,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
-import com.google.common.collect.Interner;
-
-import mixturedd.robotcontroler.BaseActivity;
+import mixturedd.robotcontroler.base.BaseActivity;
 import mixturedd.robotcontroler.R;
 import mixturedd.robotcontroler.model.Config;
 import mixturedd.robotcontroler.model.ServerConfig;
