@@ -9,3 +9,7 @@
 <h2>控制模块</h2>
 <h4>OpenWrt：ser2net、minicom</h4>
 <h4>Android：需要将十六进制的字符串hexString转换为字节流Bytes，然后OutputStream.write().flush()即可</h4>
+<h2>截图</h2>
+<img src="./screenshot/20170606233022.jpg"/>
+<img src="./screenshot/20170606233108.jpg"/>
+<img src="./screenshot/20170606233124.jpg"/>
